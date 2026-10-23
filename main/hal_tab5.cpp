@@ -34,9 +34,8 @@
 #include "font5x7.h"
 #include "tab5_io.h"
 
-// Landscape orientation; 1 is the right way up on the ST7121 Tab5 (checked on
-// the device). Touch follows the same transform, so flipping this keeps them in
-// agreement.
+// Landscape orientation; 1 is the right way up on the ST7121 Tab5. Touch
+// follows the same transform, so flipping this keeps them in agreement.
 #ifndef TAB5_ROTATE_180
 #define TAB5_ROTATE_180 1
 #endif

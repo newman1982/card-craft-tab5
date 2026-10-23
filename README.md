@@ -49,11 +49,15 @@ the keys. Unplug it and the 4× view with touch controls comes back.
 
 ## Build and flash
 
-```bat
-build_flash.bat              :: build + flash to COM13 + monitor
-build_flash.bat COM5
-build_flash.bat COM13 clean  :: after changing sdkconfig.defaults
+From an ESP-IDF v6.x environment:
+
+```sh
+idf.py set-target esp32p4      # first time, or after changing sdkconfig.defaults
+idf.py build
+idf.py -p <PORT> flash monitor
 ```
 
-The orientation is `TAB5_ROTATE_180=1` (verified on an ST7121 unit); `-DTAB5_ROTATE_180=0`
-turns it back, and touch turns with it.
+On Windows, `build_flash.bat <PORT> [clean|nobuild]` does the same from an ESP-IDF command prompt.
+
+The default orientation is `TAB5_ROTATE_180=1`; `-DTAB5_ROTATE_180=0` turns the picture
+by 180°, and touch turns with it.

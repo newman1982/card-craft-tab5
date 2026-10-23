@@ -1,31 +1,27 @@
 @echo off
 rem ============================================================================
-rem  Card Craft for M5Stack Tab5 - build + flash (ESP-IDF v6.1)
+rem  Card Craft for M5Stack Tab5 - build + flash
 rem
-rem      build_flash.bat               -> build, flash to COM13, monitor
-rem      build_flash.bat COM5          -> same, on COM5
-rem      build_flash.bat COM13 clean   -> set-target (fresh sdkconfig from defaults)
-rem      build_flash.bat COM13 nobuild -> flash only
+rem  Run from an ESP-IDF v6.x command prompt (export.bat already called).
+rem
+rem      build_flash.bat <PORT>          -> build, flash, monitor
+rem      build_flash.bat <PORT> clean    -> set-target first (fresh sdkconfig)
+rem      build_flash.bat <PORT> nobuild  -> flash and monitor only
 rem ============================================================================
 setlocal
 set "PROJ=%~dp0"
-set "IDF=C:\esp\v6.1\esp-idf"
-set "IDF_TOOLS_PATH=%USERPROFILE%\.espressif"
-
 set "PORT=%~1"
-if "%PORT%"=="" set "PORT=COM13"
 set "MODE=%~2"
 
-if /i not "%IDF_PATH%"=="%IDF%" goto :activate
+if "%PORT%"=="" (
+    echo Usage: build_flash.bat ^<PORT^> [clean^|nobuild]
+    exit /b 1
+)
 where idf.py >nul 2>nul
-if errorlevel 1 goto :activate
-goto :activated
-:activate
-echo [*] Activating ESP-IDF from %IDF% ...
-set "IDF_PATH="
-call "%IDF%\export.bat"
-if errorlevel 1 exit /b 1
-:activated
+if errorlevel 1 (
+    echo [ERROR] idf.py not found - run ESP-IDF export.bat first.
+    exit /b 1
+)
 
 if /i "%MODE%"=="nobuild" goto :flash
 if /i "%MODE%"=="clean" (
