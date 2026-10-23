@@ -1,5 +1,5 @@
-# Herni kod z puvodniho Card Craft je v game/ beze zmen. world/raycast/game/render
-# se prekladaji jako jedna jednotka pres game/unity.cpp (stejne jako originál).
+# The original Card Craft game code lives unchanged in game/. world/raycast/game/render
+# are compiled as one translation unit through game/unity.cpp, as upstream does.
 idf_component_register(
     SRCS
         "app_main.cpp"

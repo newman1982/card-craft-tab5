@@ -1,12 +1,12 @@
-# Card Craft pro M5Stack Tab5 (ESP32-P4), panel ST7121
+# Card Craft for M5Stack Tab5 (ESP32-P4), ST7121 panel
 CONFIG_IDF_TARGET="esp32p4"
-# Tab5 ma P4 rev. v1.x; IDF 6.x defaultne stavi pro rev >= v3.1
+# The Tab5 has a P4 rev v1.x; IDF 6.x builds for rev >= v3.1 by default
 CONFIG_ESP32P4_SELECTS_REV_LESS_V3=y
 CONFIG_ESP32P4_REV_MIN_1=y
 CONFIG_ESPTOOLPY_FLASHSIZE_16MB=y
 CONFIG_PARTITION_TABLE_SINGLE_APP_LARGE=y
 
-# CPU naplno, PSRAM pro DSI framebuffery
+# Full CPU clock, PSRAM for the DSI framebuffers
 CONFIG_ESP_DEFAULT_CPU_FREQ_MHZ_360=y
 CONFIG_SPIRAM=y
 CONFIG_SPIRAM_SPEED_200M=y
@@ -15,12 +15,12 @@ CONFIG_COMPILER_OPTIMIZATION_PERF=y
 CONFIG_FREERTOS_HZ=1000
 CONFIG_ESP_MAIN_TASK_STACK_SIZE=16384
 
-# Displej: dva DPI framebuffery = vlastni double-buffering bez kopirovani
+# Display: two DPI framebuffers = our own double buffering, no copies
 CONFIG_BSP_LCD_DPI_BUFFER_NUMS=2
 
-# Multitouch (pohyb + akce zaroven)
+# Multitouch (move and act at the same time)
 CONFIG_ESP_LCD_TOUCH_MAX_POINTS=5
 
-# Herni smycka si cas meri sama, watchdog na IDLE by ji zbytecne honil
+# The game loop paces itself; an IDLE-task watchdog would only get in its way
 CONFIG_ESP_TASK_WDT_CHECK_IDLE_TASK_CPU0=n
 CONFIG_ESP_TASK_WDT_CHECK_IDLE_TASK_CPU1=n

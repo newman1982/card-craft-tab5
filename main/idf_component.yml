@@ -2,15 +2,15 @@ dependencies:
   idf:
     version: ">=6.0"
 
-  ## BSP M5Stack Tab5 — od 1.3.x umi panel ST7121 (board version 3).
-  ## LVGL se kompiluje jako zavislost BSP, ale hra ho nepouziva.
+  ## M5Stack Tab5 BSP — supports the ST7121 panel (board version 3) since 1.3.x.
+  ## LVGL gets built as a BSP dependency, but the game does not use it.
   espressif/m5stack_tab5:
     version: "~1.3.2"
 
-  ## Dotyk - v BSP privatni zavislost, hra ji vola primo
+  ## Touch - a private BSP dependency, called directly by the game HAL
   espressif/esp_lcd_touch:
     version: "^1.1"
 
-  ## Externi USB klavesnice (USB-A host port Tab5)
+  ## External USB keyboard (Tab5 USB-A host port)
   espressif/usb_host_hid:
     version: "^1.1.0"

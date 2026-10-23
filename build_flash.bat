@@ -1,11 +1,11 @@
 @echo off
 rem ============================================================================
-rem  Card Craft pro M5Stack Tab5 - build + flash (ESP-IDF v6.1)
+rem  Card Craft for M5Stack Tab5 - build + flash (ESP-IDF v6.1)
 rem
-rem      build_flash.bat              -> build, flash na COM13, monitor
-rem      build_flash.bat COM5         -> totez na COM5
-rem      build_flash.bat COM13 clean  -> set-target (novy sdkconfig z defaults)
-rem      build_flash.bat COM13 nobuild-> jen flash
+rem      build_flash.bat               -> build, flash to COM13, monitor
+rem      build_flash.bat COM5          -> same, on COM5
+rem      build_flash.bat COM13 clean   -> set-target (fresh sdkconfig from defaults)
+rem      build_flash.bat COM13 nobuild -> flash only
 rem ============================================================================
 setlocal
 set "PROJ=%~dp0"
@@ -21,7 +21,7 @@ where idf.py >nul 2>nul
 if errorlevel 1 goto :activate
 goto :activated
 :activate
-echo [*] Aktivuji ESP-IDF z %IDF% ...
+echo [*] Activating ESP-IDF from %IDF% ...
 set "IDF_PATH="
 call "%IDF%\export.bat"
 if errorlevel 1 exit /b 1
@@ -41,5 +41,5 @@ if errorlevel 1 goto :err
 exit /b 0
 
 :err
-echo [CHYBA] Nektery krok selhal - viz vystup vyse.
+echo [ERROR] A step failed - see the output above.
 exit /b 1
