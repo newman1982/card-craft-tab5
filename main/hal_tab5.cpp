@@ -1,15 +1,19 @@
 // =============================================================================
 //  hal_tab5.cpp — M5Stack Tab5 (ESP32-P4), ST7121 panel
 //
-//  Display: the 720x1280 MIPI-DSI panel is used in landscape. The game's
-//  240x135 frame is scaled 4x to 960x540 at the top centre; the strips left,
-//  right and below it carry the touch controls. The DPI driver owns two
-//  framebuffers in PSRAM; present() scales straight into the one not on screen
-//  and flips, so there is no intermediate copy.
+//  Display: the 720x1280 MIPI-DSI panel is used in landscape, in one of two
+//  layouts chosen by whether a keyboard is attached:
+//    - touch layout: the game's 240x135 frame scaled 4x to 960x540 at the top
+//      centre, with the touch controls in the strips left, right and below it;
+//    - keyboard layout: no controls, the frame fills the 1280x720 screen (16:9
+//      like the game, 16/3 nearest neighbour).
+//  The DPI driver owns two framebuffers in PSRAM; present() scales straight
+//  into the one not on screen and flips, so there is no intermediate copy.
 //
 //  Input: the touch controls, plus a keyboard -- the Tab5 Keyboard module
-//  (tab5_kbd.cpp) or a USB one on the USB-A port -- with the Cardputer's layout (arrows move, W mines, A builds, E/S look, SPACE jumps,
-//  TAB crafts, ENTER confirms, ESC backs out, Q drops, 1-9 pick a slot). Both
+//  (tab5_kbd.cpp) or a USB one on the USB-A port -- with the Cardputer's
+//  layout (arrows move, W mines, A builds, E/S look, SPACE jumps, TAB crafts,
+//  ENTER confirms, ESC backs out, Q drops, 1-9 pick a slot). Touch and keyboard
 //  work at once; whatever is held on either counts.
 //
 //  Only the ST7121 panel revision is targeted: the DSI lane rate below is the

@@ -17,9 +17,11 @@ The Tab5 has an ESP32-P4 **rev v1.x**, so `sdkconfig.defaults` sets
 - `main/compat/` — thin `Arduino.h`, `Preferences.h` (NVS) and `M5GFX.h` shims, so the
   original compiles without the Arduino core and M5GFX.
 - `main/hal_tab5.cpp` — the `hal.h` implementation:
-  - the 240×135 frame is scaled 4× to 960×540 (landscape) straight into one of the
-    two DSI framebuffers in PSRAM, then flipped on vsync,
-  - on-screen touch controls in the strips around the picture (multitouch, up to 5 fingers),
+  - the game's 240×135 frame is scaled straight into one of the two DSI framebuffers
+    in PSRAM (no intermediate copy), then flipped on the panel's frame-done,
+  - two display layouts, switched automatically by keyboard detection
+    (see [Display layouts](#display-layouts)),
+  - on-screen touch controls (multitouch, up to 5 fingers),
   - keyboard mapping (Tab5 Keyboard and USB, both at once),
   - BUILD pacing: one block per press, slower repeat when held.
 - `main/tab5_kbd.cpp` — **M5Stack Tab5 Keyboard** (SKU A164): I2C 0x6D on I2C0
@@ -43,9 +45,27 @@ The Tab5 has an ESP32-P4 **rev v1.x**, so `sdkconfig.defaults` sets
 | Craft | CRAFT | `TAB` |
 | Confirm / back | OK / ESC | `ENTER` / `ESC` |
 
-With a keyboard attached, the touch controls disappear, the picture fills the whole
-1280×720 screen (16:9 like the game, 5.33× nearest-neighbour) and the in-game hints name
-the keys. Unplug it and the 4× view with touch controls comes back.
+## Display layouts
+
+The 720×1280 panel is used in landscape (1280×720). The layout follows whether a
+keyboard is attached:
+
+| | No keyboard (touch layout) | Keyboard attached (keyboard layout) |
+|---|---|---|
+| Game view | 960×540, 4× integer scale, top centre | 1280×720 full screen, 5.33× nearest-neighbour |
+| Touch controls | in the strips left, right and below the view | hidden, touch ignored |
+| In-game hints | button names (`MINE`, `BUILD`, `OK`…) | key names (`W`, `A`, `ENTER`…) |
+
+The game is 16:9 like the panel, so the full-screen view keeps its proportions; game pixels
+simply alternate between 5 and 6 panel pixels.
+
+Switching happens on its own, also in the middle of a game:
+
+- **Tab5 Keyboard** — probed once a second while absent; once found it is polled every
+  5 ms and counted as gone after 20 failed reads in a row (well under a second).
+- **USB keyboard** — follows the USB host's connect / disconnect events.
+- Either keyboard selects the keyboard layout; the touch layout returns when neither is
+  attached. Both framebuffers are repainted, so a switch takes two frames.
 
 ## Build and flash
 
